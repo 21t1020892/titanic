@@ -162,35 +162,6 @@ def phan_train(X_train, y_train, X_val, y_val, X_test, y_test):
     model.fit(X_train, y_train)
     st.write("🎯 Đánh giá mô hình bằng Cross-Validation")
     st.markdown("""
-    ### 🔍 Cross-Validation là gì?
-    """)
-    st.markdown("""
-    Cross-Validation (**CV**) là một kỹ thuật đánh giá mô hình giúp kiểm tra hiệu suất một cách khách quan.  
-    Thay vì chia dữ liệu thành một tập huấn luyện và một tập kiểm tra duy nhất, CV chia dữ liệu thành nhiều phần nhỏ (**folds**) và tiến hành huấn luyện, kiểm tra mô hình nhiều lần trên các phần này.
-
-    ---
-
-    ### 📌 Ví dụ minh họa:  
-    Hãy tưởng tượng bạn đang cố gắng cải thiện điểm số của mình. Để làm được điều đó, bạn cần cân bằng giữa giờ học, số bài tập, thời gian ngủ và xem xét tác động của chúng đến khả năng đạt điểm cao (Yes/No).
-
-    Thay vì chỉ dựa vào một tuần học duy nhất để đánh giá kết quả, bạn sẽ thử nghiệm với nhiều tuần khác nhau, thay đổi cách học, số lượng bài tập hoặc thời gian ngủ. Mỗi tuần sẽ đóng vai trò như một fold trong Cross-Validation, giúp bạn kiểm tra xem chiến lược học tập nào thực sự hiệu quả.
-    **Cross-Validation hoạt động theo nguyên tắc tương tự!**  
-
-    ---
-
-    ### 🔢 Các bước thực hiện Cross-Validation (5-Fold CV)
-    1️⃣ **Chia dữ liệu**:  
-    - Dữ liệu được chia thành 5 phần (**folds**) bằng nhau.  
-    - Mỗi phần lần lượt được sử dụng làm tập kiểm tra, phần còn lại làm tập huấn luyện.  
-
-    2️⃣ **Huấn luyện và kiểm tra**:  
-    - Lặp lại quá trình này 5 lần, mỗi lần chọn một fold khác nhau làm tập kiểm tra.  
-
-    3️⃣ **Tính điểm trung bình**:  
-    - Sau 5 lần lặp, tính trung bình các kết quả để đánh giá mô hình.  
-
-    ---
-    ### 🛠️ Cách thực hiện Cross-Validation trong Python:
     Chúng ta có thể sử dụng `cross_val_score` từ `sklearn.model_selection`:
 
     ```python
