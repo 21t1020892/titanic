@@ -62,24 +62,6 @@ def drop(df):
 
     return df
 
-def choose_label(df):
-    st.subheader("🎯 Chọn cột dự đoán (label)")
-
-    if "target_column" not in st.session_state:
-        st.session_state.target_column = None
-    
-    selected_label = st.selectbox("📌 Chọn cột dự đoán", df.columns, 
-                                  index=df.columns.get_loc(st.session_state.target_column) if st.session_state.target_column else 0)
-
-    X, y = df.drop(columns=[selected_label]), df[selected_label]  # Mặc định
-    
-    if st.button("✅ Xác nhận Label"):
-        st.session_state.target_column = selected_label
-        X, y = df.drop(columns=[selected_label]), df[selected_label]
-        st.success(f"✅ Đã chọn cột: **{selected_label}**")
-    
-    return X, y
-
 def train_test_size():
     if "df" not in st.session_state:
         st.error("❌ Dữ liệu chưa được tải lên!")
@@ -87,11 +69,11 @@ def train_test_size():
     
     df = st.session_state.df
 
-    if "survived" not in df.columns:
-        st.error("❌ Cột 'survived' không tồn tại trong dữ liệu!")
+    if "Survived" not in df.columns:
+        st.error("❌ Cột 'Survived' không tồn tại trong dữ liệu!")
         st.stop()
 
-    X, y = df.drop(columns=["survived"]), df["survived"]
+    X, y = df.drop(columns=["Survived"]), df["Survived"]
 
     st.subheader("📊 Chia dữ liệu Train - Validation - Test")
     
@@ -353,11 +335,6 @@ def hien_thi_ly_thuyet(df):
     df=xu_ly_gia_tri_thieu(df)
 
     st.subheader("3️⃣ Chuyển đổi kiểu dữ liệu")
-    st.write("""
-        Trong dữ liệu, có một số cột chứa giá trị dạng chữ (category). Ta cần chuyển đổi thành dạng số để mô hình có thể xử lý.
-        - **Cột "Sex"**: Chuyển thành 1 (male), 0 (female).
-        - **Cột "Embarked"**:   Chuyển thành 1 (Q), 2 (S), 3 (C).
-        """)
 
     df=chuyen_doi_kieu_du_lieu(df)
     
