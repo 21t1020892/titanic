@@ -14,14 +14,8 @@ import mlflow
 import io
 from sklearn.model_selection import KFold
 
-
-
 import os
 from mlflow.tracking import MlflowClient
-
-
-
-
 
 def mlflow_input():
     st.title(" HUẤN LUYỆN MÔ HÌNH ")
@@ -91,10 +85,15 @@ def train_test_size():
         st.error("❌ Dữ liệu chưa được tải lên!")
         st.stop()
     
-    df = st.session_state.df  # Lấy dữ liệu từ session_stat
-    X, y = choose_label(df)
-    
-    st.subheader("📊 Chia dữ liệu Train - Validation - Test")   
+    df = st.session_state.df
+
+    if "survived" not in df.columns:
+        st.error("❌ Cột 'survived' không tồn tại trong dữ liệu!")
+        st.stop()
+
+    X, y = df.drop(columns=["survived"]), df["survived"]
+
+    st.subheader("📊 Chia dữ liệu Train - Validation - Test")
     
     test_size = st.slider("📌 Chọn % dữ liệu Test", 10, 50, 20)
     remaining_size = 100 - test_size
@@ -102,10 +101,10 @@ def train_test_size():
 
     st.write(f"📌 **Tỷ lệ phân chia:** Test={test_size}%, Validation={val_size}%, Train={remaining_size - val_size}%")
 
-    
-
     if st.button("✅ Xác nhận Chia"):
-        # st.write("⏳ Đang chia dữ liệu...")
+        if df.shape[0] < 10:
+            st.error("❌ Dữ liệu quá ít để chia!")
+            return
 
         stratify_option = y if y.nunique() > 1 else None
         X_train_full, X_test, y_train_full, y_test = train_test_split(
@@ -119,19 +118,17 @@ def train_test_size():
         )
 
         # Lưu vào session_state
-        st.session_state.X_train = X_train
-        st.session_state.X_test = X_test
-        st.session_state.y_train = y_train
-        st.session_state.y_test = y_test
-        st.session_state.y = y
-        st.session_state.X_train_shape = X_train.shape[0]
-        st.session_state.X_val_shape = X_val.shape[0]
-        st.session_state.X_test_shape = X_test.shape[0]
+        st.session_state.update({
+            "X_train": X_train, "X_val": X_val, "X_test": X_test,
+            "y_train": y_train, "y_val": y_val, "y_test": y_test,
+            "X_train_shape": X_train.shape[0], "X_val_shape": X_val.shape[0], "X_test_shape": X_test.shape[0]
+        })
+
         summary_df = pd.DataFrame({
             "Tập dữ liệu": ["Train", "Validation", "Test"],
             "Số lượng mẫu": [X_train.shape[0], X_val.shape[0], X_test.shape[0]]
         })
-        st.table(summary_df)
+        st.dataframe(summary_df, use_container_width=True)
 
         # **Log dữ liệu vào MLflow**
         
@@ -616,15 +613,6 @@ def chon_mo_hinh():
 
     return None, None, None
 
-
-
-import numpy as np
-import streamlit as st
-
-import streamlit as st
-import numpy as np
-from sklearn.preprocessing import StandardScaler
-
 def test():
     # Kiểm tra xem mô hình đã được lưu trong session_state chưa
     model_type = st.selectbox("Chọn mô hình:", ["linear", "polynomial"])
@@ -734,14 +722,7 @@ def data():
         except Exception as e:
             st.error(f"❌ Lỗi : {e}")
             
-import streamlit as st
-import mlflow
-import os
 
-import streamlit as st
-import mlflow
-import os
-import pandas as pd
 from datetime import datetime
 
 def show_experiment_selector():
@@ -845,7 +826,7 @@ def chon():
     except Exception as e:
         st.error(f"Lỗi xảy ra: {e}")
 def main():
-    st.title("Assignment - Linear Regression")
+    st.title("Linear Regression")
     # mlflow_input()
     tab1, tab2, tab3 = st.tabs([" Tiền xử lý dữ liệu"," Huấn luyện", " Dự đoán"])
     with tab1:
