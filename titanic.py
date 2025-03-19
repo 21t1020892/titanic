@@ -100,17 +100,19 @@ def train_test_size():
         )
 
         # Lưu vào session_state
-        st.session_state.update({
-            "X_train": X_train, "X_val": X_val, "X_test": X_test,
-            "y_train": y_train, "y_val": y_val, "y_test": y_test,
-            "X_train_shape": X_train.shape[0], "X_val_shape": X_val.shape[0], "X_test_shape": X_test.shape[0]
-        })
-
+        st.session_state.X_train = X_train
+        st.session_state.X_test = X_test
+        st.session_state.y_train = y_train
+        st.session_state.y_test = y_test
+        st.session_state.y = y
+        st.session_state.X_train_shape = X_train.shape[0]
+        st.session_state.X_val_shape = X_val.shape[0]
+        st.session_state.X_test_shape = X_test.shape[0]
         summary_df = pd.DataFrame({
             "Tập dữ liệu": ["Train", "Validation", "Test"],
             "Số lượng mẫu": [X_train.shape[0], X_val.shape[0], X_test.shape[0]]
         })
-        st.dataframe(summary_df, use_container_width=True)
+        st.table(summary_df)
 
         # **Log dữ liệu vào MLflow**
         
@@ -348,14 +350,6 @@ def hien_thi_ly_thuyet(df):
     
 def chia():
     st.subheader("Chia dữ liệu thành tập Train, Validation, và Test")
-    st.write("""
-    ### 📌 Chia tập dữ liệu
-    Dữ liệu được chia thành ba phần để đảm bảo mô hình tổng quát tốt:
-    - **70%**: để train mô hình.
-    - **15%**: để validation, dùng để điều chỉnh tham số.
-    - **15%**: để test, đánh giá hiệu suất thực tế.
-
-    """)
        
     train_test_size()
     
