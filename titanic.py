@@ -34,24 +34,11 @@ def multiple_regression_theory():
         """
         **Định nghĩa**: Multiple Linear Regression (Hồi quy tuyến tính bội) là mô hình mở rộng của hồi quy tuyến tính đơn,
         trong đó có nhiều biến độc lập (feature) để dự đoán biến phụ thuộc.
-        
-        **Phương trình tổng quát:**
-        \[
-        y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n + \epsilon
-        \]
-        - \( y \): Biến mục tiêu (đầu ra)
-        - \( x_1, x_2, ..., x_n \): Các biến đầu vào (đặc trưng)
-        - \( \beta_0 \): Hệ số chặn (Intercept)
-        - \( \beta_1, \beta_2, ..., \beta_n \): Trọng số của các biến độc lập
-        - \( \epsilon \): Sai số (Error term)
-
-        **Hàm mất mát - Mean Squared Error (MSE):**
-        \[
-        MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2
-        \]
         """
     )
-
+    st.latex(r"""
+        y = w_0 + w_1x_1 + w_2x_2 + \dots + w_nx_n
+        """)
 def polynomial_regression_theory():
     st.subheader("2. Polynomial Regression")
     st.markdown(
@@ -59,19 +46,23 @@ def polynomial_regression_theory():
         **Định nghĩa**: Polynomial Regression (Hồi quy đa thức) là một biến thể của hồi quy tuyến tính, trong đó mô hình
         sử dụng các bậc cao hơn của biến độc lập để phù hợp với dữ liệu phi tuyến tính.
         
-        **Phương trình tổng quát:**
-        \[
-        y = \beta_0 + \beta_1 x + \beta_2 x^2 + \dots + \beta_n x^n + \epsilon
-        \]
-        - \( x, x^2, x^3, ..., x^n \): Các bậc của biến độc lập
-        - Các hệ số \( \beta \) tương ứng được tối ưu hóa trong quá trình huấn luyện.
-
-        **Hàm mất mát - Mean Squared Error (MSE):**
-        \[
-        MSE = \frac{1}{m} \sum_{i=1}^{m} (y_i - \hat{y}_i)^2
-        \]
         """
     )
+    st.write("""
+        Công thức tổng quát của mô hình hồi quy tuyến tính bội:
+        """)
+    st.latex(r"""
+    y = w_0 + w_1x + w_2x^2 + w_3x^3 + \dots + w_nx^n
+    """)
+
+    
+    st.write("""
+    ### Hàm mất mát (Loss Function) của Linear Regression
+    Hàm mất mát phổ biến nhất là **Mean Squared Error (MSE)**:
+    """)
+    st.latex(r"""
+    MSE = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+    """)
 
 def drop(df):
     st.subheader("🗑️ Xóa cột dữ liệu")
@@ -844,7 +835,7 @@ def chon():
 def main():
     st.title("Linear Regression")
     # mlflow_input()
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Lý thuyết Multiple Regression","Polynomial Regression","Tiền xử lý dữ liệu"," Huấn luyện", " Dự đoán"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Multiple Regression","Polynomial Regression","Tiền xử lý dữ liệu"," Huấn luyện", " Dự đoán"])
     with tab1:
         multiple_regression_theory()
     with tab2:
